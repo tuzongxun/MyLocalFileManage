@@ -16,4 +16,8 @@ public interface FileService {
 	public Map<String, Object> readFiles();
 
 	public List<FileModel> findTypeList(String type);
+
+	public FileModel findBlogInfo(String filePath);
+
+	public List<FileModel> search(String searchValue);
 }

@@ -15,7 +15,7 @@ import com.tzx.blog.service.FileService;
 
 @Controller
 @RequestMapping
-public class TestController {
+public class BlogController {
 	@Autowired
 	FileService fileService;
 
@@ -57,6 +57,20 @@ public class TestController {
 	public Object getTypeList(@RequestBody String type) {
 		System.out.println(type);
 		List<FileModel> fileModels = fileService.findTypeList(type);
+		return fileModels;
+	}
+
+	@RequestMapping(value = "/getBlogInfo", method = RequestMethod.POST)
+	@ResponseBody
+	public Object getBlogInfo(@RequestBody String filePath) {
+		FileModel fileModel = fileService.findBlogInfo(filePath);
+		return fileModel;
+	}
+
+	@RequestMapping(value = "/search", method = RequestMethod.POST)
+	@ResponseBody
+	public Object search(@RequestBody String searchValue) {
+		List<FileModel> fileModels = fileService.search(searchValue);
 		return fileModels;
 	}
 }
