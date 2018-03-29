@@ -12,16 +12,16 @@
 ![界面](blog.png)
 
 ## 环境说明
-maven
-tomcat7
-jdk8
-spring4.3.9
-angularjs1.6.9
-jquery3.2.1
-bootstrap3.3.7
-markdown
+1. maven
+1. tomcat7
+1. jdk8
+1. spring4.3.9
+1. angularjs1.6.9
+1. jquery3.2.1
+1. bootstrap3.3.7
+1. markdown
 
 ## 已实现功能
 1. 基本框架和前台简单界面
-2. 实现根据后台类型集合动态显示分类
-3. 实现点击具体分类查询出该类下笔记
+1. 实现根据后台类型集合动态显示分类
+1. 实现点击具体分类查询出该类下笔记
