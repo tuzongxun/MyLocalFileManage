@@ -1,0 +1,52 @@
+<!DOCTYPE web-app PUBLIC
+ "-//Sun Microsystems, Inc.//DTD Web Application 2.3//EN"
+ "http://java.sun.com/dtd/web-app_2_3.dtd" >
+
+<web-app>
+    <filter>
+    	<description>字符集过滤器</description>
+    	<filter-name>encodingFilter</filter-name>
+    	<filter-class>org.springframework.web.filter.CharacterEncodingFilter
+		</filter-class>
+    	<init-param>
+        	<description>字符集编码</description>
+        	<param-name>encoding</param-name>
+        	<param-value>UTF-8</param-value>
+    	</init-param>
+    	<init-param>  
+            <param-name>forceEncoding</param-name>  
+            <param-value>true</param-value>  
+        </init-param>  
+    </filter>
+    <filter-mapping>
+        <filter-name>encodingFilter</filter-name>
+        <url-pattern>/*</url-pattern>
+    </filter-mapping>
+  
+    <servlet>  
+        <servlet-name>dispatcher</servlet-name>  
+        <servlet-class>org.springframework.web.servlet.DispatcherServlet</servlet-class>  
+        <init-param>  
+           <param-name>contextConfigLocation</param-name>  
+           <param-value>classpath:spring.xml</param-value>  
+        </init-param>  
+    <load-on-startup>1</load-on-startup>  
+    </servlet>  
+    <servlet-mapping>  
+        <servlet-name>dispatcher</servlet-name>  
+        <url-pattern>/</url-pattern>  
+    </servlet-mapping> 
+    
+    
+  
+    <!-- session超时，可选，但一般会设置 -->
+    <session-config>  
+        <session-timeout>15</session-timeout>  
+    </session-config>  
+  
+    <!-- 欢迎页，默认index.jsp，如果不是则必选 -->
+    <welcome-file-list>
+    	<welcome-file>index.html</welcome-file>
+    </welcome-file-list>  
+  <display-name>Archetype Created Web Application</display-name>
+</web-app>
