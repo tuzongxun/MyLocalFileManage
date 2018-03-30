@@ -1,5 +1,6 @@
 package com.tzx.blog.service;
 
+import java.util.List;
 import java.util.Map;
 
 import com.tzx.blog.model.FileModel;
@@ -43,4 +44,12 @@ public interface FileService {
 	 * @date 2018年3月30日 上午10:05:54
 	 */
 	public Map<String, Object> search(String searchValue);
+
+	/**
+	 * 分页查询
+	 * 
+	 * @author tzx
+	 * @date 2018年3月30日 上午11:39:23
+	 */
+	public List<FileModel> findPage(int page);
 }

@@ -55,6 +55,17 @@ app.controller('tzxctr',function($scope,$rootScope,$http){
      //	分页跳转
 	$scope.getPage=function(page){
 		console.log(page);
+		$http.post('./getPages',page).then(function(response){
+		     //			console.log(response.data);
+		     //			$scope.blogs=response.data;
+		     //			$scope.typelist=response.data.typeList;
+//					fileCount=response.data.fileCount;
+//					console.log(fileCount);
+					$scope.blogs=response.data;
+//					pageMethod(fileCount);
+					$("#content").css("display","block");
+		            document.getElementById("content1").innerHTML = '';
+				});
 	}
 	
      //	笔记详情展示

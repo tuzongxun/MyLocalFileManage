@@ -1,5 +1,6 @@
 package com.tzx.blog.controller;
 
+import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -71,5 +72,12 @@ public class BlogController {
 	public Object search(@RequestBody String searchValue) {
 		Map<String, Object> fileMap = fileService.search(searchValue);
 		return fileMap;
+	}
+
+	@RequestMapping(value = "/getPages", method = RequestMethod.POST)
+	@ResponseBody
+	public Object getPages(@RequestBody Integer page) {
+		List<FileModel> fileModels = fileService.findPage(page);
+		return fileModels;
 	}
 }

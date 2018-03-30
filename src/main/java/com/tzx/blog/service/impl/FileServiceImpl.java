@@ -37,6 +37,8 @@ public class FileServiceImpl implements FileService {
 	@Value("${pageSize}")
 	private int pageSize;
 
+	private static List<FileModel> rootFiles;
+
 	@Override
 	public Map<String, Object> readFiles() {
 		Map<String, Object> map = new HashMap<String, Object>();
@@ -61,8 +63,9 @@ public class FileServiceImpl implements FileService {
 					fileModels.add(fileModel);
 				}
 			}
+			rootFiles = fileModels;
 			if (fileModels.size() > pageSize) {
-				fileModels = fileModels.subList(0, pageSize);
+				fileModels = rootFiles.subList(0, pageSize);
 			}
 
 		} else {
@@ -96,8 +99,9 @@ public class FileServiceImpl implements FileService {
 				}
 			}
 			map.put("fileCount", fileModels.size());
+			rootFiles = fileModels;
 			if (fileModels.size() > pageSize) {
-				fileModels = fileModels.subList(0, pageSize);
+				fileModels = rootFiles.subList(0, pageSize);
 			}
 		}
 		map.put("fileModels", fileModels);
@@ -215,11 +219,22 @@ public class FileServiceImpl implements FileService {
 				}
 			}
 			map.put("fileCount", fileModels.size());
+			rootFiles = fileModels;
 			if (fileModels.size() > pageSize) {
-				fileModels = fileModels.subList(0, pageSize);
+				fileModels = rootFiles.subList(0, pageSize);
 			}
 		}
 		map.put("fileModels", fileModels);
 		return map;
 	}
+
+	@Override
+	public List<FileModel> findPage(int page) {
+		List<FileModel> fileModels = new ArrayList<FileModel>();
+		fileModels = rootFiles.subList((page - 1) * pageSize,
+				(page * pageSize) > rootFiles.size() ? rootFiles.size()
+						: (page * pageSize));
+		return fileModels;
+	}
+
 }
