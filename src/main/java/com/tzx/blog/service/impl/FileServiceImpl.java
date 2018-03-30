@@ -34,6 +34,9 @@ public class FileServiceImpl implements FileService {
 	@Value("${fileRootPath}")
 	private String fileRootPath;
 
+	@Value("${pageSize}")
+	private int pageSize;
+
 	@Override
 	public Map<String, Object> readFiles() {
 		Map<String, Object> map = new HashMap<String, Object>();
@@ -42,36 +45,10 @@ public class FileServiceImpl implements FileService {
 		File file = new File(fileRootPath);
 		if (file.isDirectory()) {
 			File[] files = file.listFiles();
+			map.put("fileCount", files.length);
 			// 文件名格式：type_标题
 			for (File f : files) {
-				FileModel fileModel = new FileModel();
-				String fileName = f.getName();
-				fileModel.setFileName(fileName.substring(
-						fileName.indexOf("_") + 1, fileName.indexOf(".")));
-				fileModel.setFilePath(f.getPath());
-				String fileType = fileName.substring(0, fileName.indexOf("_"));
-				fileModel.setFileType(fileType);
-				set.add(fileType);
-				fileModels.add(fileModel);
-			}
-		} else {
-			return null;
-		}
-		map.put("fileModels", fileModels);
-		map.put("typeList", set.toArray());
-		return map;
-	}
-
-	@Override
-	public List<FileModel> findTypeList(String type) {
-		List<FileModel> fileModels = new ArrayList<FileModel>();
-		// Set<String> set = new HashSet<String>();
-		File file = new File(fileRootPath);
-		if (file.isDirectory()) {
-			File[] files = file.listFiles();
-			// 文件名格式：type_标题
-			for (File f : files) {
-				if (f.getName().startsWith(type)) {
+				if (f.getName().contains("_")) {
 					FileModel fileModel = new FileModel();
 					String fileName = f.getName();
 					fileModel.setFileName(fileName.substring(
@@ -80,12 +57,51 @@ public class FileServiceImpl implements FileService {
 					String fileType = fileName.substring(0,
 							fileName.indexOf("_"));
 					fileModel.setFileType(fileType);
-					// set.add(fileType);
+					set.add(fileType);
 					fileModels.add(fileModel);
 				}
 			}
+			if (fileModels.size() > pageSize) {
+				fileModels = fileModels.subList(0, pageSize);
+			}
+
+		} else {
+			return null;
 		}
-		return fileModels;
+		map.put("fileModels", fileModels);
+		map.put("typeList", set.toArray());
+
+		return map;
+	}
+
+	@Override
+	public Map<String, Object> findTypeList(String type) {
+		Map<String, Object> map = new HashMap<String, Object>();
+		List<FileModel> fileModels = new ArrayList<FileModel>();
+		File file = new File(fileRootPath);
+		if (file.isDirectory()) {
+			File[] files = file.listFiles();
+			// 文件名格式：type_标题
+			for (File f : files) {
+				if (f.getName().startsWith(type) && f.getName().contains("_")) {
+					FileModel fileModel = new FileModel();
+					String fileName = f.getName();
+					fileModel.setFileName(fileName.substring(
+							fileName.indexOf("_") + 1, fileName.indexOf(".")));
+					fileModel.setFilePath(f.getPath());
+					String fileType = fileName.substring(0,
+							fileName.indexOf("_"));
+					fileModel.setFileType(fileType);
+					fileModels.add(fileModel);
+				}
+			}
+			map.put("fileCount", fileModels.size());
+			if (fileModels.size() > pageSize) {
+				fileModels = fileModels.subList(0, pageSize);
+			}
+		}
+		map.put("fileModels", fileModels);
+		return map;
 	}
 
 	@Override
@@ -99,10 +115,8 @@ public class FileServiceImpl implements FileService {
 		String fileType = fileName.substring(0, fileName.indexOf("_"));
 		fileModel.setFileType(fileType);
 		StringBuffer str = new StringBuffer();
-		// FileReader fileReader = null;
 		BufferedReader br = null;
 		try {
-			// fileReader = new FileReader(f);
 			br = new BufferedReader(new InputStreamReader(
 					new FileInputStream(f), "utf-8"));
 			while (br.ready()) {
@@ -121,7 +135,6 @@ public class FileServiceImpl implements FileService {
 				str.append(string).append("<br>");
 			}
 			br.close();
-			// fileReader.close();
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
 		} catch (IOException e) {
@@ -129,7 +142,6 @@ public class FileServiceImpl implements FileService {
 		} finally {
 			try {
 				br.close();
-				// fileReader.close();s
 			} catch (IOException e) {
 				e.printStackTrace();
 			}
@@ -142,13 +154,17 @@ public class FileServiceImpl implements FileService {
 	 * 搜索方法，需要搜索文件名和内容
 	 */
 	@Override
-	public List<FileModel> search(String searchValue) {
+	public Map<String, Object> search(String searchValue) {
+		Map<String, Object> map = new HashMap<String, Object>();
 		List<FileModel> fileModels = new ArrayList<FileModel>();
 		Pattern pattern = Pattern.compile(searchValue);
 		File file = new File(fileRootPath);
 		if (file.isDirectory()) {
 			File[] files = file.listFiles();
 			fl: for (File f : files) {
+				if (!f.getName().contains("_")) {
+					continue;
+				}
 				Matcher matcher = pattern.matcher(f.getName());
 				if (matcher.find()) {
 					FileModel fileModel = new FileModel();
@@ -162,7 +178,7 @@ public class FileServiceImpl implements FileService {
 					fileModels.add(fileModel);
 					continue;
 				} else {
-					StringBuffer str = new StringBuffer();
+					// StringBuffer str = new StringBuffer();
 					BufferedReader br = null;
 					try {
 						br = new BufferedReader(new InputStreamReader(
@@ -198,7 +214,12 @@ public class FileServiceImpl implements FileService {
 					}
 				}
 			}
+			map.put("fileCount", fileModels.size());
+			if (fileModels.size() > pageSize) {
+				fileModels = fileModels.subList(0, pageSize);
+			}
 		}
-		return fileModels;
+		map.put("fileModels", fileModels);
+		return map;
 	}
 }

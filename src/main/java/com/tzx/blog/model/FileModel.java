@@ -8,9 +8,21 @@ package com.tzx.blog.model;
  *
  */
 public class FileModel {
+	/**
+	 * 文件名
+	 */
 	private String fileName;
+	/**
+	 * 文件保存位置
+	 */
 	private String filePath;
+	/**
+	 * 文件内容
+	 */
 	private String fileContent;
+	/**
+	 * 文件类别
+	 */
 	private String fileType;
 
 	public String getFileName() {

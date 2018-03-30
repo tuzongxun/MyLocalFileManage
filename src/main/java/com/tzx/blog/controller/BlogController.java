@@ -1,6 +1,5 @@
 package com.tzx.blog.controller;
 
-import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,21 +27,8 @@ public class BlogController {
 	@RequestMapping(value = "/getIndex")
 	@ResponseBody
 	public Object index() {
-		// String content = "";
-		// 文件列表
-		// List<FileModel> fileModels = fileService.readFiles();
 		Map<String, Object> fileMap = fileService.readFiles();
-		// if (fileModels != null && fileModels.size() > 0) {
-		// content = fileModels.get(0).getFileContent();
-		// }
 		System.out.println("my test");
-		// Map<String, Object> map = new HashMap<String, Object>();
-		// List<String> list = new ArrayList<String>();
-		// list.add("java");
-		// list.add("数据库");
-		// map.put("typeList", list);
-		// // map.put("content", content);
-		// map.put("blogs", fileMap);
 		return fileMap;
 	}
 
@@ -56,10 +42,17 @@ public class BlogController {
 	@ResponseBody
 	public Object getTypeList(@RequestBody String type) {
 		System.out.println(type);
-		List<FileModel> fileModels = fileService.findTypeList(type);
-		return fileModels;
+		// List<FileModel> fileModels = fileService.findTypeList(type);
+		Map<String, Object> fileMap = fileService.findTypeList(type);
+		return fileMap;
 	}
 
+	/**
+	 * 笔记内容查看
+	 * 
+	 * @author tzx
+	 * @date 2018年3月30日 上午10:02:44
+	 */
 	@RequestMapping(value = "/getBlogInfo", method = RequestMethod.POST)
 	@ResponseBody
 	public Object getBlogInfo(@RequestBody String filePath) {
@@ -67,10 +60,16 @@ public class BlogController {
 		return fileModel;
 	}
 
+	/**
+	 * 通过关键字搜索
+	 * 
+	 * @author tzx
+	 * @date 2018年3月30日 上午10:03:15
+	 */
 	@RequestMapping(value = "/search", method = RequestMethod.POST)
 	@ResponseBody
 	public Object search(@RequestBody String searchValue) {
-		List<FileModel> fileModels = fileService.search(searchValue);
-		return fileModels;
+		Map<String, Object> fileMap = fileService.search(searchValue);
+		return fileMap;
 	}
 }

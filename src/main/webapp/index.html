@@ -17,12 +17,12 @@
     <div class="container" ng-controller="tzxctr">
     <center><h1>my local file manager</h1></center>
     <div class="row">
-        <div class="col-md-3 col-md-offset-9" >
+        <div class="col-md-4 col-md-offset-8" >
         	<ul class="list-unstyled list-inline">
         	  <li><input type="text" id="search"></input></li>
         	  <li><input type="button" value="搜索" ng-click="search()"></input></li>
-        	  <!-- <li><a href="">写博客</a></li>
-        	  <li><a href="">预留</a></li> -->
+        	  <!-- <li><a href="">写博客</a></li>-->
+        	  <li><a href="http://localhost:8080/MyLocalFileManage">首页</a></li> 
         	</ul>
         </div>
     </div>
@@ -46,6 +46,14 @@
         	     <hr/>
         	  </li>
         	</ul>
+        	<ul class="list-unstyled list-inline">
+        	  <center><a href="#" ng-click="getPage('last');">&lt;</a>&nbsp;
+        	  <li ng-repeat="page in pages" style="display:inline">
+        	     <a href="#" ng-click="getPage(page);">{{page}}</a>&nbsp;
+        	  </li>&nbsp;<a href="#" ng-click="getPage('next');">&gt;</a>
+        	  </center>
+        	</ul>
+        	
         </div>
         <div class="col-md-9 col-md-offset-1" id="content1">
 			<!-- <ul class="list-unstyled">
