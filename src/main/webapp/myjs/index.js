@@ -1,5 +1,6 @@
 var app=angular.module('tzxblog',[]);
 app.controller('tzxctr',function($scope,$rootScope,$http){
+	$rootScope.pageSize=5;
 	$scope.name='tzx';
 	$scope.typelist=['java相关','数据库','框架','设计模式','linux系统','开发工具'];
     //	首页查询方法
@@ -8,10 +9,9 @@ app.controller('tzxctr',function($scope,$rootScope,$http){
     //	console.log(response.data);
 			$scope.typelist=response.data.typeList;
 			fileCount=response.data.fileCount;
-			console.log(fileCount);
+//			console.log(fileCount);
 			$scope.blogs=response.data.fileModels;
 			pageMethod(fileCount);
-			
 			$rootScope.isShow=false;
     //		document.getElementById("content").show();
 		});
@@ -20,19 +20,19 @@ app.controller('tzxctr',function($scope,$rootScope,$http){
 	var pageMethod=function(fileCount){
 		var pageArr=new Array();
 		var pageSize=0;
-		if(fileCount > 10 && fileCount%10 == 0){
-			pageSize=fileCount/10;
-		}else if(fileCount > 10 && fileCount%10 != 0){
-			pageSize=fileCount/10+1;
-		}else if(fileCount < 10){
+		if(fileCount > $rootScope.pageSize && fileCount%$rootScope.pageSize == 0){
+			pageSize=fileCount/$rootScope.pageSize;
+		}else if(fileCount > $rootScope.pageSize && fileCount%$rootScope.pageSize != 0){
+			pageSize=fileCount/$rootScope.pageSize+1;
+		}else if(fileCount < $rootScope.pageSize){
 			pageSize=1;
 		}else{
 			pageArr=new Array();
 		};
-		console.log(pageSize);
+//		console.log(pageSize);
 		for(var i=1;i <= pageSize;i++){	
 			pageArr[i-1]=i;
-			console.log(pageArr);
+//			console.log(pageArr);
 			$scope.pages=pageArr;	
 		};
 	}
@@ -44,7 +44,7 @@ app.controller('tzxctr',function($scope,$rootScope,$http){
      //			$scope.blogs=response.data;
      //			$scope.typelist=response.data.typeList;
 			fileCount=response.data.fileCount;
-			console.log(fileCount);
+//			console.log(fileCount);
 			$scope.blogs=response.data.fileModels;
 			pageMethod(fileCount);
 			$("#content").css("display","block");
@@ -54,13 +54,13 @@ app.controller('tzxctr',function($scope,$rootScope,$http){
 	
      //	分页跳转
 	$scope.getPage=function(page){
-		console.log(page);
+//		console.log(page);
 		$http.post('./getPages',page).then(function(response){
 		     //			console.log(response.data);
 		     //			$scope.blogs=response.data;
 		     //			$scope.typelist=response.data.typeList;
 //					fileCount=response.data.fileCount;
-//					console.log(fileCount);
+//				    console.log($scope.fileCount);
 					$scope.blogs=response.data;
 //					pageMethod(fileCount);
 					$("#content").css("display","block");
@@ -86,7 +86,7 @@ app.controller('tzxctr',function($scope,$rootScope,$http){
      //	关键字搜索
 	$scope.search=function(){
 		var searchValue=document.getElementById("search").value;
-		console.log(searchValue);
+//		console.log(searchValue);
 		$http.post('./search',searchValue).then(function(response){
 			fileCount=response.data.fileCount;
 			console.log(fileCount);
